@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,6 @@ public class TextReplaceEntity {
     private String replacedText;
 
     @Column(nullable = false)
-    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime createdAt;
 }

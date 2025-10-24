@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: assignment-db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - assignment-network
+
+  backend:
+    build:
+      context: ./assignment-backend
+      dockerfile: Dockerfile
+    container_name: assignment-backend
+    depends_on:
+      - db
+    env_file:
+      - ./assignment-backend/.env
+    ports:
+      - "8080:8080"
+    networks:
+      - assignment-network
+
+volumes:
+  postgres_data:
+
+networks:
+  assignment-network:
+    driver: bridge

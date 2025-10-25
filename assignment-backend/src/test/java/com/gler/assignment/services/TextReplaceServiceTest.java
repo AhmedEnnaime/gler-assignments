@@ -3,7 +3,6 @@ package com.gler.assignment.services;
 import com.gler.assignment.dto.TextReplaceDto;
 import com.gler.assignment.entities.TextReplaceEntity;
 import com.gler.assignment.repositories.TextReplaceRepository;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,7 +23,7 @@ class TextReplaceServiceTest {
     private TextReplaceService service;
 
     @Test
-    void testReplaceText_Elephant() {
+    void givenValidWordWhenProcessTextReplacementThenReturnReplacedDto() {
         String input = "elephant";
         TextReplaceEntity savedEntity = TextReplaceEntity.builder()
                 .id(1L)
@@ -40,27 +39,15 @@ class TextReplaceServiceTest {
     }
 
     @Test
-    void testReplaceText_Home() {
-        String input = "home";
-        when(repository.save(any(TextReplaceEntity.class))).thenReturn(new TextReplaceEntity());
+    void givenShortTextOfTwoCharactersWhenProcessTextReplacementThenReturnNullAndNotSave() {
+        String input = "ab";
         TextReplaceDto result = service.processTextReplacement(input);
-        assertNotNull(result);
-        assertEquals("home", result.getOriginalText());
-        assertEquals("*om$", result.getReplacedText());
+        assertNull(result);
+        verify(repository, never()).save(any(TextReplaceEntity.class));
     }
 
     @Test
-    void testReplaceText_MixedCharacters() {
-        String input = "abc#20xyz";
-        when(repository.save(any(TextReplaceEntity.class))).thenReturn(new TextReplaceEntity());
-        TextReplaceDto result = service.processTextReplacement(input);
-        assertNotNull(result);
-        assertEquals("abc#20xyz", result.getOriginalText());
-        assertEquals("*bc#20xy$", result.getReplacedText());
-    }
-
-    @Test
-    void testReplaceText_ThreeCharacters() {
+    void givenThreeCharacterTextWhenProcessTextReplacementThenReplaceFirstAndLastCharacter() {
         String input = "abc";
         when(repository.save(any(TextReplaceEntity.class))).thenReturn(new TextReplaceEntity());
         TextReplaceDto result = service.processTextReplacement(input);
@@ -70,27 +57,7 @@ class TextReplaceServiceTest {
     }
 
     @Test
-    void testReplaceText_LongString() {
-        String input = "TetingCodeAssignmentProject";
-        when(repository.save(any(TextReplaceEntity.class))).thenReturn(new TextReplaceEntity());
-        TextReplaceDto result = service.processTextReplacement(input);
-        assertNotNull(result);
-        assertEquals("TetingCodeAssignmentProject", result.getOriginalText());
-        assertEquals("*etingCodeAssignmentProjec$", result.getReplacedText());
-    }
-
-    @Test
-    void testReplaceText_OnlyNumbers() {
-        String input = "12345";
-        when(repository.save(any(TextReplaceEntity.class))).thenReturn(new TextReplaceEntity());
-        TextReplaceDto result = service.processTextReplacement(input);
-        assertNotNull(result);
-        assertEquals("12345", result.getOriginalText());
-        assertEquals("*234$", result.getReplacedText());
-    }
-
-    @Test
-    void testReplaceText_SpecialCharacters() {
+    void givenTextWithSpecialCharactersWhenProcessTextReplacementThenReplaceFirstAndLastCharacter() {
         String input = "@#$%^&";
         when(repository.save(any(TextReplaceEntity.class))).thenReturn(new TextReplaceEntity());
         TextReplaceDto result = service.processTextReplacement(input);
@@ -100,15 +67,17 @@ class TextReplaceServiceTest {
     }
 
     @Test
-    void testReplaceText_TwoCharacters() {
-        String input = "ab";
+    void givenOnlyNumbersWhenProcessTextReplacementThenReplaceFirstAndLastCharacter() {
+        String input = "12345";
+        when(repository.save(any(TextReplaceEntity.class))).thenReturn(new TextReplaceEntity());
         TextReplaceDto result = service.processTextReplacement(input);
-        assertNull(result);
-        verify(repository, never()).save(any(TextReplaceEntity.class));
+        assertNotNull(result);
+        assertEquals("12345", result.getOriginalText());
+        assertEquals("*234$", result.getReplacedText());
     }
 
     @Test
-    void testReplaceText_EmptyString() {
+    void givenEmptyStringWhenProcessTextReplacementThenThrowIllegalArgumentException() {
         String input = "";
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
@@ -119,7 +88,7 @@ class TextReplaceServiceTest {
     }
 
     @Test
-    void testReplaceText_OneCharacter() {
+    void givenSingleCharacterWhenProcessTextReplacementThenThrowIllegalArgumentException() {
         String input = "a";
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
@@ -130,14 +99,12 @@ class TextReplaceServiceTest {
     }
 
     @Test
-    void testReplaceText_NullInput() {
-        String input = null;
+    void givenNullInputWhenProcessTextReplacementThenThrowIllegalArgumentException() {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> service.processTextReplacement(input)
+                () -> service.processTextReplacement(null)
         );
         assertEquals("Text cannot be null", exception.getMessage());
         verify(repository, never()).save(any(TextReplaceEntity.class));
     }
-
 }

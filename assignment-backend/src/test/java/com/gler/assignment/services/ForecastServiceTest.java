@@ -53,7 +53,7 @@ class ForecastServiceTest {
     }
 
     @Test
-    void GivenValidRequestWhenProcessForecastThenReturnMaxValues() {
+    void givenValidRequestWhenProcessForecastThenReturnMaxValues() {
         ForecastRequestDto request = new ForecastRequestDto(true, true, true);
         OpenMeteoApiResponse apiResponse = buildApiResponse(
                 Arrays.asList(10.5, 15.2, 20.3),
@@ -71,14 +71,14 @@ class ForecastServiceTest {
     }
 
     @Test
-    void GivenExternalApiFailureWhenProcessForecastThenThrowUpstreamApiException() {
+    void givenExternalApiFailureWhenProcessForecastThenThrowUpstreamApiException() {
         ForecastRequestDto request = new ForecastRequestDto(true, true, true);
         when(openMeteoClient.fetchForecastData()).thenThrow(new UpstreamApiException("Connection failed"));
         assertThrows(UpstreamApiException.class, () -> forecastService.processForecast(request));
     }
 
     @Test
-    void GivenAllParametersFalseWhenProcessForecastThenReturnEmptyResponse() {
+    void givenAllParametersFalseWhenProcessForecastThenReturnEmptyResponse() {
         ForecastRequestDto request = new ForecastRequestDto(false, false, false);
         when(forecastRepository.save(any(ForecastEntity.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
@@ -89,7 +89,7 @@ class ForecastServiceTest {
     }
 
     @Test
-    void GivenNullRequestWhenProcessForecastThenThrowIllegalArgumentException() {
+    void givenNullRequestWhenProcessForecastThenThrowIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> forecastService.processForecast(null));
     }
 
@@ -119,7 +119,7 @@ class ForecastServiceTest {
 
     @ParameterizedTest
     @NullAndEmptySource
-    void GivenNullOrEmptyTemperatureListThenReturnNullTemperature(List<Double> temperatures) {
+    void givenNullOrEmptyTemperatureListThenReturnNullTemperature(List<Double> temperatures) {
         ForecastRequestDto request = new ForecastRequestDto(true, false, false);
         OpenMeteoApiResponse apiResponse = buildApiResponse(temperatures, null, null);
         when(openMeteoClient.fetchForecastData()).thenReturn(apiResponse);

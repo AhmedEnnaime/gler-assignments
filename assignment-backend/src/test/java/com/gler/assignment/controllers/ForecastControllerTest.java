@@ -27,7 +27,7 @@ class ForecastControllerTest {
     private static final String BASE_URL = "/api/v1/forecasts";
 
     @Test
-    void GivenValidRequestWhenProcessForecastThenReturn200() throws Exception {
+    void givenValidRequestWhenProcessForecastThenReturn200() throws Exception {
         String json = """
             {
               "addTemprature": true,
@@ -47,7 +47,7 @@ class ForecastControllerTest {
             "",
             "{invalid json}"
     })
-    void GivenInvalidRequestBodyWhenProcessForecastThenReturn400(String invalidBody) throws Exception {
+    void givenInvalidRequestBodyWhenProcessForecastThenReturn400(String invalidBody) throws Exception {
         mockMvc.perform(post(BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidBody))
@@ -55,7 +55,7 @@ class ForecastControllerTest {
     }
 
     @Test
-    void GivenExternalApiFailureWhenProcessForecastThenReturn502() throws Exception {
+    void givenExternalApiFailureWhenProcessForecastThenReturn502() throws Exception {
         when(forecastService.processForecast(Mockito.any()))
                 .thenThrow(new UpstreamApiException("Connection to the upstream is unreachable"));
 

@@ -150,8 +150,6 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
             />
           </Box>
         </Box>
-
-        {/* Internal Notes */}
         <Box sx={{ mb: 3 }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
             Internal Notes

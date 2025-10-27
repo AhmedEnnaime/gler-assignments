@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import {
   Box,
   Typography,
-  Tabs,
-  Tab,
   TextField,
   InputAdornment,
   Table,
@@ -116,24 +114,47 @@ const DataTable: React.FC<DataTableProps> = ({
           Waitlist
         </Typography>
       </Box>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
-        <Tabs value={activeTab} onChange={(_, newValue) => onTabChange(newValue)}>
-          <Tab
-            label="Service Providers"
+      <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Box
+            onClick={() => onTabChange(0)}
             sx={{
-              fontWeight: activeTab === 0 ? 'bold' : 'normal',
-              color: activeTab === 0 ? 'primary.main' : 'text.primary',
+              px: 3,
+              py: 1,
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontWeight: 600,
+              backgroundColor: activeTab === 0 ? '#e9ecef' : '#f0f0f0',
+              color: 'text.primary',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                backgroundColor: activeTab === 0 ? '#e9ecef' : '#e0e0e0',
+              },
             }}
-          />
-          <Tab
-            label="Customers"
+          >
+            Service Providers
+          </Box>
+          <Box
+            onClick={() => onTabChange(1)}
             sx={{
-              fontWeight: activeTab === 1 ? 'bold' : 'normal',
-              color: activeTab === 1 ? 'primary.main' : 'text.primary',
+              px: 3,
+              py: 1,
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontWeight: 600,
+              backgroundColor: activeTab === 1 ? '#e9ecef' : '#f0f0f0',
+              color: 'text.primary',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                backgroundColor: activeTab === 1 ? '#e9ecef' : '#e0e0e0',
+              },
             }}
-          />
-        </Tabs>
+          >
+            Customers
+          </Box>
+        </Box>
       </Box>
+
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
         <TextField
           size="small"

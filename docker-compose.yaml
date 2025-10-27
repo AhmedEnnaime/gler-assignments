@@ -30,6 +30,18 @@ services:
     networks:
       - assignment-network
 
+  frontend:
+    build:
+      context: ./assignment-frontend
+      dockerfile: Dockerfile
+    container_name: assignment-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - assignment-network
+
 volumes:
   postgres_data:
 

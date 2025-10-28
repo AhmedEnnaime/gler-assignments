@@ -43,7 +43,9 @@ services:
       - assignment-network
 
   jenkins:
-    image: jenkins/jenkins:lts-jdk17
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: assignment-jenkins
     user: root
     restart: always

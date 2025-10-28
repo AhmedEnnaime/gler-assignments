@@ -22,7 +22,9 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                sh 'mvn clean verify -DskipITs=false'
+                dir('assignment-backend') {
+                    sh 'mvn clean verify -DskipITs=false'
+                }
             }
         }
 
